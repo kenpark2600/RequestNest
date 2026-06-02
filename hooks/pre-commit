@@ -1,0 +1,13 @@
+#!/bin/sh
+# RequestNest pre-commit hook — blocks commits that would leak secrets or
+# commit un-normalized Postman JSON.
+#
+# Install:  cp hooks/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+# (or symlink it). Requires `requestnest` to be on PATH.
+
+if ! command -v requestnest >/dev/null 2>&1; then
+    echo "requestnest not found on PATH; skipping RequestNest verify." >&2
+    exit 0
+fi
+
+requestnest verify

@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="images/banner.svg" alt="RequestNest - Share Postman without the team plan." width="540">
+</p>
+
 # RequestNest
 
 **Keep Postman. Skip the per-seat cost. Collaborate through git.**
@@ -355,3 +359,9 @@ ruff check .    # lint
 Architecture: the orchestration core (`sync.py`) is UI-agnostic and talks to the
 user only through the `UI` protocol (`ui.py`), so a TUI or web UI can be added
 later as a thin layer. See [docs/project-brief.md](docs/project-brief.md).
+
+## Trademarks
+
+RequestNest is an independent open-source project and is not affiliated with,
+endorsed by, or sponsored by Postman, Inc. "Postman" is a trademark of its
+respective owner and is used here only to describe interoperability.

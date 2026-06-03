@@ -1,7 +1,7 @@
 # Project Brief — RequestNest
 
 > Status: **MVP implemented** (2026-06-02). Captures the design decisions from
-> brainstorming; see [../README.md](../README.md) for usage. Update as decisions evolve.
+> brainstorming; see the [home page](index.md) for usage. Update as decisions evolve.
 
 ## Implementation status (2026-06-02)
 

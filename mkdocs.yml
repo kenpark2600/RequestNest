@@ -1,0 +1,49 @@
+site_name: RequestNest
+site_description: Free team sharing of Postman collections and environments using git — keep Postman, skip the per-seat cost.
+site_url: https://requestnest.dev
+repo_url: https://github.com/kenpark2600/RequestNest
+repo_name: kenpark2600/RequestNest
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.details
+
+nav:
+  - Home: index.md
+  - Project brief: project-brief.md
+  - Market analysis: market-analysis.md
+  - Manual test checklist: manual-test-checklist.md
+  - Publishing: publishing.md

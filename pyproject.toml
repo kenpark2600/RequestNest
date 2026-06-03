@@ -5,12 +5,26 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "requestnest"
 version = "0.1.0"
-description = "Share Postman collections and environments for free, using git as the shared workspace."
+description = "Free team sharing of Postman collections and environments using git as the shared workspace — keep Postman, skip the per-seat cost."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-authors = [{ name = "RequestNest contributors" }]
-keywords = ["postman", "collections", "git", "sync", "cli"]
+authors = [{ name = "Ken Park", email = "hello@requestnest.dev" }]
+keywords = ["postman", "collections", "git", "sync", "cli", "team", "collaboration", "free", "api"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Utilities",
+]
 dependencies = [
     "click>=8.1",
     "httpx>=0.27",
@@ -23,7 +37,17 @@ dev = [
     "pytest>=8.0",
     "respx>=0.21",
     "ruff>=0.6",
+    "build>=1.2",
+    "twine>=5.0",
 ]
+docs = [
+    "mkdocs-material>=9.5",
+]
+
+[project.urls]
+Homepage = "https://github.com/kenpark2600/RequestNest"
+Repository = "https://github.com/kenpark2600/RequestNest"
+Issues = "https://github.com/kenpark2600/RequestNest/issues"
 
 [project.scripts]
 requestnest = "requestnest.cli:main"

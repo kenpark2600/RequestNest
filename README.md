@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/banner.svg" alt="RequestNest - Share Postman without the team plan." width="540">
+  <img src="images/banner.svg" alt="RequestNest - Share Postman without the team plan" width="540">
 </p>
 
 # RequestNest

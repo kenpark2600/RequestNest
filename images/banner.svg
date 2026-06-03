@@ -13,5 +13,5 @@
   <ellipse cx="103" cy="86" rx="5" ry="8" fill="#FFF6E9" opacity="0.7"/>
   <!-- wordmark -->
   <text x="216" y="98" font-size="50" font-weight="700" fill="#546E7A">Request<tspan fill="#00BFA5">Nest</tspan></text>
-  <text x="218" y="128" font-size="17" font-weight="400" fill="#78909C">Share Postman without the team plan.</text>
+  <text x="218" y="128" font-size="17" font-weight="400" fill="#78909C">Share Postman without the team plan</text>
 </svg>

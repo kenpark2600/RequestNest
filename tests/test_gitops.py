@@ -18,6 +18,10 @@ def git(path, *args):
 @pytest.fixture
 def repo(tmp_path):
     git(tmp_path, "init", "-b", "main")
+    # Persist a local identity so gitops' bare `git commit` works even on a
+    # runner with no global git identity (e.g. GitHub Actions).
+    git(tmp_path, "config", "user.email", "test@example.com")
+    git(tmp_path, "config", "user.name", "Test User")
     (tmp_path / "collections").mkdir()
     f = tmp_path / "collections" / "orders.json"
     f.write_text('{"a": 1}\n', encoding="utf-8")

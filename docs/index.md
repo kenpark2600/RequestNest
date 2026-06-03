@@ -35,8 +35,31 @@ pip install requestnest        # or: pipx install requestnest
 requestnest --version
 ```
 
+If `requestnest` isn't found afterward, pip's scripts folder isn't on your
+`PATH` (common on Windows) — run it as a module instead, which needs no PATH
+change:
+
+```sh
+python -m requestnest --version
+```
+
+See the [README install notes](https://github.com/kenpark2600/RequestNest#install)
+for PATH and virtualenv tips.
+
 You'll need a Postman API key (Postman → Settings → API keys). Provide it when
-`init`/`setup` prompts, or set `REQUESTNEST_API_KEY`.
+`init`/`setup` prompts, or set the `REQUESTNEST_API_KEY` environment variable:
+
+PowerShell:
+
+```powershell
+$env:REQUESTNEST_API_KEY = "PMAK-..."
+```
+
+Bash / Zsh:
+
+```bash
+export REQUESTNEST_API_KEY="PMAK-..."
+```
 
 ## Quickstart
 

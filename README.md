@@ -52,7 +52,7 @@ You need these once, on your machine:
 
 ## Install
 
-Until RequestNest is on PyPI, install from a clone:
+Until RequestNest is on PyPI, install from a clone. From the repo root:
 
 ```sh
 git clone <requestnest repo> && cd requestnest
@@ -60,21 +60,95 @@ pip install -e .            # installs the `requestnest` command (alias `rn`)
 requestnest --version
 ```
 
-Prefer an isolated global install? Use [pipx](https://pipx.pypa.io):
-`pipx install -e .` (or `pipx install requestnest` once published). This is the
-"mindless" option — the command is always on your PATH, including for the
-pre-commit hook.
+> **`requestnest` not found after install?** pip installed the command into a
+> per-user scripts folder that isn't on your `PATH` (very common on Windows —
+> pip prints a `WARNING: The scripts requestnest.exe ... is not on PATH`). You
+> have three ways out:
 
-### Set your API key once (optional, recommended)
-
-After the first `init`/`setup`, your key is saved to the gitignored
-`.requestnest.state.yaml`, so you won't be asked again. If you'd rather not store
-it on disk at all, export it instead and RequestNest will use it everywhere:
+**1. Run it as a module — no PATH change needed (works everywhere):**
 
 ```sh
-# add to ~/.bashrc / ~/.zshrc / PowerShell $PROFILE
-export REQUESTNEST_API_KEY="PMAK-..."
+python -m requestnest --version
 ```
+
+**2. Add the scripts folder to PATH.** It's the folder pip named in its warning.
+
+<details><summary>PowerShell (Windows) — persistent, user-level</summary>
+
+```powershell
+# Derive the user scripts folder, then add it to your User PATH (open a NEW terminal after).
+$scripts = python -c "import sysconfig; print(sysconfig.get_path('scripts','nt_user'))"
+$old = [Environment]::GetEnvironmentVariable("Path", "User")
+if ($old -notlike "*$scripts*") {
+    [Environment]::SetEnvironmentVariable("Path", "$old;$scripts", "User")
+    "Added $scripts to PATH — open a new terminal."
+}
+```
+</details>
+
+<details><summary>Bash / Zsh — add to <code>~/.bashrc</code> or <code>~/.zshrc</code></summary>
+
+```bash
+export PATH="$PATH:$(python -c 'import sysconfig; print(sysconfig.get_path("scripts","posix_user"))')"
+```
+</details>
+
+**3. Use a virtualenv (cleanest for repeat use)** — puts `requestnest` on PATH
+automatically whenever the venv is active, and isolates the install:
+
+<details><summary>PowerShell (Windows)</summary>
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1     # if blocked: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+pip install -e .
+```
+</details>
+
+<details><summary>Bash / Zsh</summary>
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
+</details>
+
+Prefer an isolated *global* install? Use [pipx](https://pipx.pypa.io):
+`pipx install -e .` (or `pipx install requestnest` once published) — the command
+is always on your PATH, including for the pre-commit hook.
+
+### Set your API key
+
+Easiest: run `requestnest init` (or `setup`) and paste your key when asked — it's
+saved to the gitignored `.requestnest.state.yaml`, so you're never asked again.
+
+Prefer not to store it on disk, or running in CI? Set the `REQUESTNEST_API_KEY`
+environment variable instead — it takes precedence everywhere:
+
+<details><summary>PowerShell (Windows)</summary>
+
+```powershell
+# Current session only:
+$env:REQUESTNEST_API_KEY = "PMAK-..."
+
+# Persistent (every new terminal) — open a NEW terminal afterward:
+[Environment]::SetEnvironmentVariable("REQUESTNEST_API_KEY", "PMAK-...", "User")
+```
+</details>
+
+<details><summary>Bash / Zsh</summary>
+
+```bash
+# Current session:
+export REQUESTNEST_API_KEY="PMAK-..."
+
+# Persistent: add the same line to ~/.bashrc or ~/.zshrc
+```
+</details>
+
+> Your `PMAK-...` key is itself a secret — never paste it into a committed file.
+> The env var and the gitignored state file both keep it out of git.
 
 ---
 
@@ -239,13 +313,27 @@ warns loudly if either one is ever left un-ignored.
 Run `requestnest verify` in CI to keep the repo normalized and secret-free. To
 block leaks locally, install the hook:
 
-```sh
+<details><summary>Bash / Zsh</summary>
+
+```bash
 cp hooks/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
 ```
+</details>
+
+<details><summary>PowerShell (Windows)</summary>
+
+```powershell
+Copy-Item hooks/pre-commit .git/hooks/pre-commit   # no chmod needed — Git for Windows runs hooks via its bundled sh
+```
+</details>
 
 ## Troubleshooting
 
-- **"No Postman API key"** — run `requestnest init`, or `export REQUESTNEST_API_KEY=...`.
+- **`requestnest` not found / "not recognized as a command"** — the scripts
+  folder isn't on your `PATH`. Run `python -m requestnest ...` instead, or fix
+  PATH (see [Install](#install)).
+- **"No Postman API key"** — run `requestnest init`, or set the
+  `REQUESTNEST_API_KEY` env var (see [Set your API key](#set-your-api-key)).
 - **"… is not mapped to your workspace"** — run `requestnest init` (or `setup`) so
   RequestNest can match/create the resource in *your* account.
 - **"Refusing to push: unmarked secret-shaped values"** — mark the variable

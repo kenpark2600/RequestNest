@@ -12,16 +12,15 @@
 #}
 {% block extrahead %}
   {#- `page` is None on the 404 error page, so fall back to site-level values -#}
-  {% if page and not page.is_homepage %}
+  {% if page and page.is_homepage %}
+    {% set og_title = "RequestNest — Share Postman without the team plan" %}
+    {% set og_desc = config.site_description %}
+  {% elif page %}
     {% set og_title = page.title | default(config.site_name, true) %}
     {% set og_desc = page.meta.description | default(config.site_description, true) %}
   {% else %}
-    {%- if page and page.meta.description %}
-      {% set og_desc = page.meta.description %}
-    {% else %}
-      {% set og_desc = config.site_description %}
-    {% endif -%}
     {% set og_title = config.site_name %}
+    {% set og_desc = config.site_description %}
   {% endif %}
   {% set og_image = "https://requestnest.dev/assets/social-card.png" %}
   <meta property="og:type" content="website">

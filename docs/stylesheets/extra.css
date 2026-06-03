@@ -1,0 +1,27 @@
+/* RequestNest brand palette ("option 2")
+   Logo + light-mode UI : Vivid Teal      #00BFA5
+   Dark-mode UI         : Bright Turquoise #2DD4BF
+   Material's named palettes can't hit these exact hexes, so we set the
+   CSS custom properties per color scheme here instead. */
+
+/* Light mode */
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color:        #00BFA5;
+  --md-primary-fg-color--light: #4fd6c4;
+  --md-primary-fg-color--dark:  #00897b;
+  --md-accent-fg-color:         #00BFA5;
+  /* links: a touch deeper than the brand color for readable contrast on white */
+  --md-typeset-a-color:         #00897b;
+}
+
+/* Dark (slate) mode */
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color:        #2DD4BF;
+  --md-primary-fg-color--light: #5fe0d1;
+  --md-primary-fg-color--dark:  #14b8a6;
+  --md-accent-fg-color:         #2DD4BF;
+  --md-typeset-a-color:         #2DD4BF;
+  /* dark glyphs on the bright turquoise header bar for legibility */
+  --md-primary-bg-color:        #06302b;
+  --md-primary-bg-color--light: rgba(6, 48, 43, 0.72);
+}

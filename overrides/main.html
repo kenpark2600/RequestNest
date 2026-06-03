@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{#
+  Static Open Graph / Twitter card metadata for link unfurls (Slack, etc.).
+
+  One card for the whole site. We deliberately skipped the per-page Material
+  `social` plugin (overkill + imaging deps in CI for a small docs site); this is
+  the lightweight 90/10 alternative — plain meta tags, no build dependencies.
+
+  The image must be a raster PNG (unfurlers don't render SVG og:image). It lives
+  at docs/assets/social-card.png and deploys to /assets/social-card.png.
+#}
+{% block extrahead %}
+  {% set og_title = page.title | default(config.site_name, true) %}
+  {% set og_desc = page.meta.description | default(config.site_description, true) %}
+  {% set og_image = "https://requestnest.dev/assets/social-card.png" %}
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ config.site_name }}">
+  <meta property="og:title" content="{{ og_title }}">
+  <meta property="og:description" content="{{ og_desc }}">
+  <meta property="og:image" content="{{ og_image }}">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="640">
+  {% if page.canonical_url %}<meta property="og:url" content="{{ page.canonical_url }}">{% endif %}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ og_title }}">
+  <meta name="twitter:description" content="{{ og_desc }}">
+  <meta name="twitter:image" content="{{ og_image }}">
+{% endblock %}

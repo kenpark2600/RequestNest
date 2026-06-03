@@ -28,6 +28,39 @@ seats — and it **sanitizes secrets automatically** so tokens never reach the r
 
 See the [Market analysis](market-analysis.md) for the full picture.
 
+## How it works
+
+RequestNest is a Python 3.10+ CLI (`click` for commands, `httpx` for the Postman
+REST API, `pyyaml`, and `rich` for output) that treats a git repo as the shared
+workspace. A publisher runs `init` then `push` to share a collection; a teammate
+runs `setup` to import it into their own workspace. The committed repo is the
+source of truth, and the CLI drives git for you (auto commit/pull/push, gated by
+config and a `--no-git` flag), with `diff` and `--dry-run` previews so nothing
+changes before you see it.
+
+Behind the scenes:
+
+- **Sync model** — each command talks to `api.getpostman.com` with your personal
+  `PMAK-` key, syncing your personal Postman workspace ⇄ the repo. Free Postman
+  accounts can use the API against their own workspace, which is the whole basis
+  for the tool.
+- **Clean diffs** — before anything is written, collections and environments run
+  through a normalization pass: volatile `id`/timestamp fields are stripped,
+  object keys are deterministically ordered, and array order is preserved. Diffs
+  stay readable and commits don't churn.
+- **Secret safety** — any Postman variable marked `type: secret` (plus an
+  optional config override list) is replaced with a `{{placeholder}}` in the
+  committed JSON; the real value lives only in a gitignored local file and is
+  restored on `pull`. A pre-push safety scan additionally blocks anything
+  token-shaped (PMAK-, AWS keys, JWTs, long hex) that wasn't marked, so
+  credentials never reach the repo.
+- **Per-account identity** — Postman resource UIDs differ per account, so the
+  committed config is UID-free (logical names only) and each person's
+  name→UID mapping is kept in gitignored local state.
+- **Architecture** — git is driven via subprocess (no libgit dependency), and
+  the orchestration core is UI-agnostic, so a TUI or web UI could be layered on
+  later. See the [project brief](project-brief.md) for the full design.
+
 ## Install
 
 ```sh
@@ -35,8 +68,31 @@ pip install requestnest        # or: pipx install requestnest
 requestnest --version
 ```
 
+If `requestnest` isn't found afterward, pip's scripts folder isn't on your
+`PATH` (common on Windows) — run it as a module instead, which needs no PATH
+change:
+
+```sh
+python -m requestnest --version
+```
+
+See the [README install notes](https://github.com/kenpark2600/RequestNest#install)
+for PATH and virtualenv tips.
+
 You'll need a Postman API key (Postman → Settings → API keys). Provide it when
-`init`/`setup` prompts, or set `REQUESTNEST_API_KEY`.
+`init`/`setup` prompts, or set the `REQUESTNEST_API_KEY` environment variable:
+
+PowerShell:
+
+```powershell
+$env:REQUESTNEST_API_KEY = "PMAK-..."
+```
+
+Bash / Zsh:
+
+```bash
+export REQUESTNEST_API_KEY="PMAK-..."
+```
 
 ## Quickstart
 

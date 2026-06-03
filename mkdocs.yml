@@ -1,5 +1,5 @@
 site_name: RequestNest
-site_description: Free team sharing of Postman collections and environments using git — keep Postman, skip the per-seat cost.
+site_description: Free team sharing of Postman collections and environments using git — keep Postman, skip the per-seat cost, with secrets sanitized automatically.
 site_url: https://requestnest.dev
 repo_url: https://github.com/kenpark2600/RequestNest
 repo_name: kenpark2600/RequestNest

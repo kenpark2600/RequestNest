@@ -44,9 +44,15 @@ def _dispatch(app: Any, fn: Callable[..., None], **kwargs: Any) -> None:
 @click.pass_context
 def main(ctx: click.Context, no_git: bool, dry_run: bool, verbose: bool) -> None:
     """RequestNest: sync your personal Postman workspace with a shared git repo."""
+    from .config import find_repo_root
     from .context import AppContext
 
-    ctx.obj = AppContext(no_git=no_git, dry_run=dry_run, verbose=verbose)
+    ctx.obj = AppContext(
+        no_git=no_git,
+        dry_run=dry_run,
+        verbose=verbose,
+        repo_root=find_repo_root(),
+    )
 
 
 @main.command()

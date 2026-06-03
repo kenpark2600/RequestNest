@@ -135,6 +135,20 @@ def config_exists(root: Path) -> bool:
     return config_path(root).exists()
 
 
+def find_repo_root(start: Path | None = None) -> Path:
+    """Walk upward from ``start`` (default cwd) to the dir holding the config.
+
+    Lets commands run from any subfolder, like ``git``. If no ``.requestnest.yaml``
+    is found in any ancestor, returns ``start`` itself — which is what a fresh
+    ``init`` wants (it creates the config in the current directory).
+    """
+    start = (start or Path.cwd()).resolve()
+    for directory in (start, *start.parents):
+        if (directory / CONFIG_FILENAME).exists():
+            return directory
+    return start
+
+
 # --------------------------------------------------------------------------- #
 # Load / save
 # --------------------------------------------------------------------------- #

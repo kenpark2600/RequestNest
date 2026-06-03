@@ -70,6 +70,19 @@ def test_secrets_example_has_keys_but_no_values(tmp_path):
     assert "real-token" not in text
 
 
+def test_find_repo_root_walks_up_to_config(tmp_path):
+    config.save_config(tmp_path, config.Config())
+    nested = tmp_path / "a" / "b" / "c"
+    nested.mkdir(parents=True)
+    assert config.find_repo_root(nested) == tmp_path.resolve()
+
+
+def test_find_repo_root_returns_start_when_no_config(tmp_path):
+    nested = tmp_path / "sub"
+    nested.mkdir()
+    assert config.find_repo_root(nested) == nested.resolve()
+
+
 def test_ensure_gitignored_appends_missing_entries(tmp_path):
     added = config.ensure_gitignored(tmp_path)
     assert set(added) == set(config.GITIGNORED_FILES)
